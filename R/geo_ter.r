@@ -1,6 +1,6 @@
-# geo_ter v1.1 - add-ins for R 2.13.0
+# geo_ter v1.2 - add-ins for R 2.13.0
 # made in: <<TerraNoNames [http://mykaralw.narod.ru/]>>
-# 25.06.2011.
+# 10.08.2011.
 
 # Functions:
 # function [xp,yp,ztri] <- tri.param(Tri,X,Y,Z)                     --- O(N)
@@ -183,17 +183,13 @@ tri.plot.2d <- function(Tri,X,Y,Z)
  legend("topright", legend = c(maxz, minz),lty = c(1,1),col = c(rg.color(minz,maxz,maxz),rg.color(minz,maxz,minz)),bg = 'white')
 }
 
-tri.plot.3d <- function(Tri,X,Y,Z,teta=0.7,zeta=1)
+tri.plot.3d <- function(Tri,XX,YY,ZZ,teta=0.7,zeta=1)
 {
- ttc <- teta
- if (abs(ttc)>1)
- {
-   tts<-1/sqrt(1-(1/ttc)^2)
- }
- else
- {
-   tts<-sqrt(1-ttc^2)
- }
+ X <- (XX-mean(XX))
+ Y <- (YY-mean(YY))
+ Z <- (ZZ)
+ ttc <- cos(teta)
+ tts <- sin(teta)
  zt <- zeta
  res <- matrix(c(ttc,-tts,-zt,0,tts,ttc,zt,0,0,0,1,0,0,0,0,1),nrow=4,ncol=4)
  m <- length(Tri)
@@ -213,7 +209,7 @@ tri.plot.3d <- function(Tri,X,Y,Z,teta=0.7,zeta=1)
  ztri <- (zpA+zpB+zpC)/3
  minz <- min(ztri)
  maxz <- max(ztri)
- xy <- trans3d(x,y,z,res)
+ xy <- trans3d(X,Y,Z,res)
  plot(xy)
  for (i in 1:n)
  {
@@ -231,7 +227,7 @@ tri.plot.3d <- function(Tri,X,Y,Z,teta=0.7,zeta=1)
  legend("topright", legend = c(maxz, minz),lty = c(1,1),col = c(rg.color(minz,maxz,maxz),rg.color(minz,maxz,minz)),bg = 'white')
 }
 
-print("Library geo_ter_v1.1 load...")
+print("Library geo_ter_v1.2 load...")
 print(" Functions:")
 print("  [xp,yp,ztri] <- tri.param(Tri,X,Y,Z)          --- O(N)")
 print("  [stri,ztri] <- tri.area(Tri,X,Y,Z)            --- O(N)")
