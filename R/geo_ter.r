@@ -1,4 +1,4 @@
-# geo_ter v1.2 - add-ins for R 2.13.0
+# geo_ter v1.3 - add-ins for R 2.13.0
 # made in: <<TerraNoNames [http://mykaralw.narod.ru/]>>
 # 10.08.2011.
 
@@ -183,15 +183,16 @@ tri.plot.2d <- function(Tri,X,Y,Z)
  legend("topright", legend = c(maxz, minz),lty = c(1,1),col = c(rg.color(minz,maxz,maxz),rg.color(minz,maxz,minz)),bg = 'white')
 }
 
-tri.plot.3d <- function(Tri,XX,YY,ZZ,teta=0.7,zeta=1)
+tri.plot.3d <- function(Tri,XX,YY,ZZ,teta=0.7,zeta=0.7)
 {
  X <- (XX-mean(XX))
  Y <- (YY-mean(YY))
  Z <- (ZZ)
  ttc <- cos(teta)
  tts <- sin(teta)
- zt <- zeta
- res <- matrix(c(ttc,-tts,-zt,0,tts,ttc,zt,0,0,0,1,0,0,0,0,1),nrow=4,ncol=4)
+ ztc <- cos(zeta)
+ zts <- sin(zeta)
+ res <- matrix(c(ttc,-tts*ztc,-tts*zts,0,tts,ttc*ztc,ttc*zts,0,0,-zts,ztc,0,0,0,0,1),nrow=4,ncol=4)
  m <- length(Tri)
  n <- length(Tri$A)
  triA <- Tri$A
@@ -210,7 +211,7 @@ tri.plot.3d <- function(Tri,XX,YY,ZZ,teta=0.7,zeta=1)
  minz <- min(ztri)
  maxz <- max(ztri)
  xy <- trans3d(X,Y,Z,res)
- plot(xy)
+ plot(xy,asp=1)
  for (i in 1:n)
  {
   tr.x <- c(xpA[i],xpB[i],xpC[i],xpA[i])
@@ -227,7 +228,7 @@ tri.plot.3d <- function(Tri,XX,YY,ZZ,teta=0.7,zeta=1)
  legend("topright", legend = c(maxz, minz),lty = c(1,1),col = c(rg.color(minz,maxz,maxz),rg.color(minz,maxz,minz)),bg = 'white')
 }
 
-print("Library geo_ter_v1.2 load...")
+print("Library geo_ter_v1.3 load...")
 print(" Functions:")
 print("  [xp,yp,ztri] <- tri.param(Tri,X,Y,Z)          --- O(N)")
 print("  [stri,ztri] <- tri.area(Tri,X,Y,Z)            --- O(N)")
