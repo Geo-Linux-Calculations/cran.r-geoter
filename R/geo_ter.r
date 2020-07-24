@@ -1,4 +1,4 @@
-# geo_ter v1.3 - add-ins for R 2.13.0
+# geo_ter v1.2 - add-ins for R 2.13.0
 # made in: <<TerraNoNames [http://mykaralw.narod.ru/]>>
 # 10.08.2011.
 
@@ -183,52 +183,65 @@ tri.plot.2d <- function(Tri,X,Y,Z)
  legend("topright", legend = c(maxz, minz),lty = c(1,1),col = c(rg.color(minz,maxz,maxz),rg.color(minz,maxz,minz)),bg = 'white')
 }
 
-tri.plot.3d <- function(Tri,XX,YY,ZZ,teta=0.7,zeta=0.7)
+pk.delta <- function(X,Y,A)
+{
+ c <- cos(A)
+ s <- sin(A)
+ pk0 <- X*c+Y*s
+ delta0 <- Y*c-X*s
+ pkdelta <- data.frame(pk=pk0,delta=delta0)
+ return(pkdelta) 
+}
+
+tri.plot.3d <- function(Tri,XX,YY,ZZ,teta=5/4*pi,zeta=1/4*pi)
 {
  X <- (XX-mean(XX))
  Y <- (YY-mean(YY))
  Z <- (ZZ)
- ttc <- cos(teta)
- tts <- sin(teta)
- ztc <- cos(zeta)
- zts <- sin(zeta)
- res <- matrix(c(ttc,-tts*ztc,-tts*zts,0,tts,ttc*ztc,ttc*zts,0,0,-zts,ztc,0,0,0,0,1),nrow=4,ncol=4)
  m <- length(Tri)
  n <- length(Tri$A)
  triA <- Tri$A
  triB <- Tri$B
  triC <- Tri$C
- xpA <- X[triA]
- ypA <- Y[triA]
- zpA <- Z[triA]
- xpB <- X[triB]
- ypB <- Y[triB]
- zpB <- Z[triB]
- xpC <- X[triC]
- ypC <- Y[triC]
- zpC <- Z[triC]
- ztri <- (zpA+zpB+zpC)/3
+ xy2d <- pk.delta(X,Y,teta)
+ x2d <- xy2d$pk
+ y2d <- xy2d$delta
+ xz3d <- pk.delta(x2d,Z,zeta)
+ x3d <- xz3d$pk
+ y3d <- y2d
+ z3d <- xz3d$delta
+ xpA <- x3d[triA]
+ ypA <- y3d[triA]
+ zpA <- z3d[triA]
+ zA <- Z[triA]
+ xpB <- x3d[triB]
+ ypB <- y3d[triB]
+ zpB <- z3d[triB]
+ zB <- Z[triB]
+ xpC <- x3d[triC]
+ ypC <- y3d[triC]
+ zpC <- z3d[triC]
+ zC <- Z[triC]
+ ztri <- (zA+zB+zC)/3
  minz <- min(ztri)
  maxz <- max(ztri)
- xy <- trans3d(X,Y,Z,res)
- plot(xy,asp=1)
- for (i in 1:n)
+ plot(y3d,z3d)
+ ztris <- sort(-ztri,index.return=TRUE)
+ zi <- ztris$ix
+ for (j in 1:n)
  {
-  tr.x <- c(xpA[i],xpB[i],xpC[i],xpA[i])
-  tr.y <- c(ypA[i],ypB[i],ypC[i],ypA[i])
-  tr.z <- c(zpA[i],zpB[i],zpC[i],zpA[i])
+  i <- n+1-j
+  tr.x <- c(ypA[i],ypB[i],ypC[i],ypA[i])
+  tr.y <- c(zpA[i],zpB[i],zpC[i],zpA[i])
   tr.c <- rg.color(minz,maxz,ztri[i])
-  trs.xy <- trans3d(tr.x,tr.y,tr.z,res)
-  trs.x <- trs.xy$x
-  trs.y <- trs.xy$y
-  polygon(trs.x,trs.y,col=tr.c)
+  polygon(tr.x,tr.y,col=tr.c)
  }
  minz <- trunc(1000*minz+0.5)/1000
  maxz <- trunc(1000*maxz+0.5)/1000
  legend("topright", legend = c(maxz, minz),lty = c(1,1),col = c(rg.color(minz,maxz,maxz),rg.color(minz,maxz,minz)),bg = 'white')
 }
 
-print("Library geo_ter_v1.3 load...")
+print("Library geo_ter_v1.2 load...")
 print(" Functions:")
 print("  [xp,yp,ztri] <- tri.param(Tri,X,Y,Z)          --- O(N)")
 print("  [stri,ztri] <- tri.area(Tri,X,Y,Z)            --- O(N)")
