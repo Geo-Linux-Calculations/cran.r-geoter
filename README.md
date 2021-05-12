@@ -1,3 +1,8 @@
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Geo-Linux-Calculations/cran.r-geoter)
+![GitHub repo size](https://img.shields.io/github/repo-size/Geo-Linux-Calculations/cran.r-geoter)
+![GitHub all releases](https://img.shields.io/github/downloads/Geo-Linux-Calculations/cran.r-geoter/total)
+![GitHub](https://img.shields.io/github/license/Geo-Linux-Calculations/cran.r-geoter)
+
 # CRAN.R GeoTer
 
 ## Description
