@@ -1,4 +1,5 @@
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Geo-Linux-Calculations/cran.r-geoter)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Geo-Linux-Calculations/cran.r-geoter)
+![GitHub Release Date](https://img.shields.io/github/release-date/Geo-Linux-Calculations/cran.r-geoter)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Geo-Linux-Calculations/cran.r-geoter)
 ![GitHub all releases](https://img.shields.io/github/downloads/Geo-Linux-Calculations/cran.r-geoter/total)
 ![GitHub](https://img.shields.io/github/license/Geo-Linux-Calculations/cran.r-geoter)
@@ -42,7 +43,7 @@ A surface defined by sets of points can also be represented by a set of non-inte
 
 After the triangulation is made (the points are combined into triangles), for each triangle, you can find the area and level of its center:
 ```
-St = 1/2 * [(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x1)*(y3-y1)]
+St = 1/2 * |(x1+x2)*(y1-y2)+(x2+x3)*(y2-y3)+(x3+x1)*(y3-y1)|
 Ht = 1/3 * (H1+H2+H3)
 ```
 
